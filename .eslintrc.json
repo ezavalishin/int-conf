@@ -1,0 +1,92 @@
+{
+  "root": true,
+  "extends": [
+    "eslint:recommended",
+    "plugin:promise/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended"
+  ],
+  "plugins": [
+    "import",
+    "promise",
+    "react",
+    "react-hooks"
+  ],
+  "globals": {
+    "globalThis": false
+  },
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "node": true,
+    "es6": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true,
+      "jsx": true
+    }
+  },
+  "rules": {
+    "semi": "error",
+    "no-trailing-spaces": "error",
+    "indent": [
+      "error",
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "quotes": [
+      "error",
+      "single",
+      {
+        "allowTemplateLiterals": true
+      }
+    ],
+    "no-console": "off",
+    "promise/no-nesting": "off",
+    "promise/always-return": "off",
+    "promise/catch-or-return": "off",
+    "promise/no-promise-in-callback": "off",
+    "import/no-unresolved": [
+      0,
+      {
+        "commonjs": true,
+        "amd": true
+      }
+    ],
+    "strict": [
+      "error",
+      "global"
+    ],
+    "curly": "warn",
+    "react-hooks/exhaustive-deps": "off",
+    "react/prop-types": "off"
+  },
+  "settings": {
+    "react": {
+      "version": "16.13"
+    },
+    "import/ignore": [
+      "styled-components"
+    ],
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".css",
+          ".scss",
+          ".ts",
+          ".tsx"
+        ]
+      }
+    }
+  }
+}
