@@ -2,11 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import AppNew from './AppNew';
+import OneFilePlayer from './pages/OneFilePlayer';
 
 ReactDOM.render(
   <React.StrictMode>
-    <AppNew />
+    <OneFilePlayer />
   </React.StrictMode>,
   document.getElementById('root')
 );
