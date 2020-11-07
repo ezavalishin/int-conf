@@ -38,6 +38,9 @@ const OneFilePlayer = () => {
     if (webmSupported !== '') {
       setFormat('webm');
       f = 'webm';
+    } else {
+      setWindowIsReady(true);
+      return;
     }
 
     const promises = [];
