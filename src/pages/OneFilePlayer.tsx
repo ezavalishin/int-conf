@@ -1,4 +1,4 @@
-import React, {useMemo, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {Box, FormControl, InputLabel, MenuItem, Select} from '@material-ui/core';
 import ReactPlayer from 'react-player';
 
@@ -6,21 +6,59 @@ const OneFilePlayer = () => {
 
   const player = useRef<ReactPlayer>(null);
 
+  const timeRef = useRef(0);
+
+  const [screen, setScreen] = useState<string>('');
+
   const [type, setType] = useState('open');
   const [floor, setFloor] = useState('light');
 
   const [playing, setPlaying] = useState(false);
-  const [, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
-  const [currentTIme, setCurrentTime] = useState(0);
+  // const [currentTIme, setCurrentTime] = useState(0);
+
+  const seekToCurrent = () => {
+    if (player.current) {
+      player.current.seekTo(timeRef.current, 'seconds');
+    }
+  };
+
+  useEffect(() => {
+    if (player.current) {
+      const htmlVideo = player.current.getInternalPlayer() as HTMLVideoElement;
+
+      if (htmlVideo) {
+        htmlVideo.addEventListener('loadedmetadata', () => {
+          console.log(timeRef.current);
+          seekToCurrent();
+        });
+
+      }
+    }
+  }, [player.current]);
+
+  const makeScreen = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 640;
+    canvas.height = 480;
+    const ctx = canvas.getContext('2d');
+
+    if (player.current && ctx) {
+      ctx.drawImage(player.current.getInternalPlayer() as HTMLVideoElement, 0, 0, canvas.width, canvas.height);
+
+      const dataURI = canvas.toDataURL('image/jpeg');
+
+      setScreen(dataURI);
+    }
+  };
 
 
   const videoUrl = useMemo(() => {
-    setLoading(true);
 
-    requestAnimationFrame(() => {
-      seekToCurrent();
-    });
+    makeScreen();
+
+    setLoading(true);
 
     return `/videos/new/kitchen_${type}_${floor}.mp4`;
   }, [type, floor]);
@@ -28,12 +66,6 @@ const OneFilePlayer = () => {
   const handleReady = () => {
     setLoading(false);
     setPlaying(true);
-  };
-
-  const seekToCurrent = () => {
-    if (player.current) {
-      player.current.seekTo(currentTIme, 'seconds');
-    }
   };
 
 
@@ -72,8 +104,26 @@ const OneFilePlayer = () => {
             </FormControl>
           </Box>
         </Box>
-        <Box mt={1}>
-          <ReactPlayer onProgress={({playedSeconds}) => setCurrentTime(playedSeconds)} progressInterval={10} ref={player} onReady={handleReady} muted={true} loop={true} playing={playing} url={videoUrl}/>
+        <Box mt={1} position="relative">
+          <ReactPlayer
+            onProgress={({playedSeconds}) => {
+              if (playedSeconds > 0) {
+                timeRef.current = playedSeconds;
+              }
+            }}
+            progressInterval={10}
+            ref={player}
+            onReady={handleReady}
+            muted={true}
+            loop={true}
+            playing={playing}
+            url={videoUrl}
+          />
+
+          {(loading && screen.length > 0) && (
+            <img alt="screen" width={640} height={360} style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0}} src={screen}/>
+          )}
+
         </Box>
       </Box>
     </Box>
