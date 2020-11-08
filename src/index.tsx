@@ -2,11 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import OneFilePlayer from './pages/OneFilePlayer';
+import PreloadPlayer from './pages/PreloadPlayer';
 
 ReactDOM.render(
   <React.StrictMode>
-    <OneFilePlayer />
+    <PreloadPlayer />
   </React.StrictMode>,
   document.getElementById('root')
 );
