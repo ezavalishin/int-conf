@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useMemo, useRef, useState} from 'react';
-import {Box, FormControl, InputLabel, MenuItem, Select} from '@material-ui/core';
+import {Box, Container, FormControl, InputLabel, MenuItem, Select} from '@material-ui/core';
 import ReactPlayer from 'react-player';
 
 // const videos = [
@@ -90,20 +90,29 @@ const VideoWrapper: FC<VideoWrapperProps> = ({videos, supportWebm, preparedVideo
   }, [set, supportWebm]);
 
   const makeScreen = () => {
-    const canvas = document.createElement('canvas');
-    canvas.width = 640;
-    canvas.height = 480;
-    const ctx = canvas.getContext('2d');
 
-    if (player.current && ctx) {
+    if (player.current) {
       if (!player.current.getInternalPlayer()) {
         return;
       }
-      ctx.drawImage(player.current.getInternalPlayer() as HTMLVideoElement, 0, 0, canvas.width, canvas.height);
 
-      const dataURI = canvas.toDataURL('image/jpeg');
+      const videoRef:HTMLVideoElement = player.current.getInternalPlayer() as HTMLVideoElement;
 
-      setScreen(dataURI);
+      const canvas = document.createElement('canvas');
+
+      console.log('video ref', videoRef, videoRef.width, videoRef.height);
+
+      canvas.width = videoRef.offsetWidth;
+      canvas.height = videoRef.offsetHeight;
+      const ctx = canvas.getContext('2d');
+
+      if (ctx) {
+        ctx.drawImage(player.current.getInternalPlayer() as HTMLVideoElement, 0, 0, canvas.width, canvas.height);
+
+        const dataURI = canvas.toDataURL('image/jpeg');
+
+        setScreen(dataURI);
+      }
     }
   };
 
@@ -176,10 +185,13 @@ const VideoWrapper: FC<VideoWrapperProps> = ({videos, supportWebm, preparedVideo
 
       <Box mt={1} position="relative">
         <ReactPlayer
+          width="100%"
+          height="auto"
           ref={player}
           url={preparedVideo}
           muted={true}
           loop={true}
+          playsinline={true}
           playing={playing}
           progressInterval={10}
           onReady={handleReady}
@@ -192,7 +204,7 @@ const VideoWrapper: FC<VideoWrapperProps> = ({videos, supportWebm, preparedVideo
           }}
         />
         {screen && (
-          <img alt="screen" width={640} height={360} style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0}} src={screen}/>
+          <img alt="screen" style={{position: 'absolute', top: 0, left: 0, width: '100%', height: 'auto'}} src={screen}/>
         )}
       </Box>
     </div>
@@ -210,14 +222,17 @@ const PreloadPlayer = () => {
 
   useEffect(() => {
     const video = document.createElement('video');
-    const sup = video.canPlayType('video/webm') != '';
+    let sup = video.canPlayType('video/webm') != '';
+
+    // remove webm
+    sup = false;
 
     setWebmSupported(sup);
 
-    if (!sup) {
-      setIsReady(true);
-      return;
-    }
+    // if (!sup) {
+    //   setIsReady(true);
+    //   return;
+    // }
 
     const variants = videos.map((type) => {
       return type.values.map((value) => {
@@ -265,10 +280,10 @@ const PreloadPlayer = () => {
 
 
   return (
-    <div>
+    <Container>
       {isReady && <VideoWrapper videos={videos} supportWebm={webmSupported} preparedVideos={preparedVideos}/>}
       {!isReady && <div>loading</div>}
-    </div>
+    </Container>
   );
 };
 
