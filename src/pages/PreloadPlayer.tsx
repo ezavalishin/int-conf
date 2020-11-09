@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useMemo, useRef, useState} from 'react';
-import {Box, Container, FormControl, InputLabel, MenuItem, Select} from '@material-ui/core';
+import {Box, Container, FormControl, InputLabel, MenuItem, Select, LinearProgress} from '@material-ui/core';
 import ReactPlayer from 'react-player';
 
 // const videos = [
@@ -214,25 +214,35 @@ const VideoWrapper: FC<VideoWrapperProps> = ({videos, supportWebm, preparedVideo
 const PreloadPlayer = () => {
 
   const [webmSupported, setWebmSupported] = useState<boolean | null>(null);
-  const [videoFiles, setVideoFiles] = useState<string[] | null>(null);
 
   const [isReady, setIsReady] = useState(false);
 
   const [preparedVideos, setPreparedVideos] = useState<PreparedVideo[]>([]);
+
+  const [progress, setProgress] = useState<{ [key: string]: number; }>({});
+
+  const totalProgress = useMemo(() => {
+    const total = Object.values(progress).reduce((acc, val) => {
+      return acc + val;
+    }, 0) as number;
+
+    return total / Object.keys(progress).length;
+
+  }, [progress]);
 
   useEffect(() => {
     const video = document.createElement('video');
     let sup = video.canPlayType('video/webm') != '';
 
     // remove webm
-    sup = false;
+    // sup = false;
 
     setWebmSupported(sup);
 
-    // if (!sup) {
-    //   setIsReady(true);
-    //   return;
-    // }
+    if (!sup) {
+      setIsReady(true);
+      return;
+    }
 
     const variants = videos.map((type) => {
       return type.values.map((value) => {
@@ -256,6 +266,15 @@ const PreloadPlayer = () => {
         const req = new XMLHttpRequest;
         req.open('GET', `/videos/new/${videoFile}`, true);
         req.responseType = 'blob';
+
+        req.onprogress = function (event) {
+          setProgress((old) => {
+            return {
+              ...old,
+              [videoFile]: event.loaded / event.total
+            };
+          });
+        };
 
         req.onload = function () {
           if (this.status === 200) {
@@ -282,7 +301,9 @@ const PreloadPlayer = () => {
   return (
     <Container>
       {isReady && <VideoWrapper videos={videos} supportWebm={webmSupported} preparedVideos={preparedVideos}/>}
-      {!isReady && <div>loading</div>}
+      {!isReady && <Box m={5}>
+        <LinearProgress value={totalProgress} />
+      </Box>}
     </Container>
   );
 };
