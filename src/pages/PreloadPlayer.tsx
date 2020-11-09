@@ -302,7 +302,7 @@ const PreloadPlayer = () => {
     <Container>
       {isReady && <VideoWrapper videos={videos} supportWebm={webmSupported} preparedVideos={preparedVideos}/>}
       {!isReady && <Box m={5}>
-        <LinearProgress value={totalProgress} />
+        <LinearProgress variant="determinate" value={totalProgress} />
       </Box>}
     </Container>
   );
