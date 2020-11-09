@@ -226,7 +226,7 @@ const PreloadPlayer = () => {
       return acc + val;
     }, 0) as number;
 
-    return total / Object.keys(progress).length;
+    return total / Object.keys(progress).length * 100;
 
   }, [progress]);
 
