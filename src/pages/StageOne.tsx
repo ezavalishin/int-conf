@@ -131,6 +131,7 @@ const StageOne: FC<StageProps> = ({videos, videoState, updateSet, goNext = null}
 
   const videoUrl = useMemo(() => {
     console.log(videoState);
+    console.log(getVideoUrl(videoState));
     return getVideoUrl(videoState);
   }, [videoState]);
 
