@@ -2,11 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import PreloadPlayer from './pages/PreloadPlayer';
+import Demo from './pages/Demo';
 
 ReactDOM.render(
   <React.StrictMode>
-    <PreloadPlayer />
+    <Demo/>
   </React.StrictMode>,
   document.getElementById('root')
 );

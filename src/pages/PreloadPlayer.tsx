@@ -163,7 +163,7 @@ const VideoWrapper: FC<VideoWrapperProps> = ({videos, supportWebm, preparedVideo
   // }, [player.current, playing, videoUrl]);
 
   return (
-    <div>
+    <div style={{maxWidth: '960px', margin: '0 auto'}}>
       <Box display="flex">
         {videos.map(((videType, key) => (
           <Box mx={1} key={videType.label}>
