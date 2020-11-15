@@ -26,42 +26,42 @@ const Wrapper = styled.div`
 const videos:Array<VideoType> = [
   {
     name: 'type',
-    label: 'Тип',
+    label: 'Grundriss',
     values: [
       {
-        label: 'Открытый',
+        label: 'Ohne Abtrennung',
         value: 'open'
       },
       {
-        label: 'Закрытый',
+        label: 'Mit Abtrennung',
         value: 'close'
       }
     ]
   },
   {
     name: 'floor',
-    label: 'Пол',
+    label: 'Boden',
     values: [
       {
-        label: 'Светлый',
+        label: 'Hell',
         value: 'light'
       },
       {
-        label: 'Темный',
+        label: 'Dunkel',
         value: 'dark'
       }
     ]
   },
   {
     name: 'wall',
-    label: 'Стены',
+    label: 'Wand- und Deckelbeläge',
     values: [
       {
-        label: 'Светлые',
+        label: 'Hell ',
         value: 'light'
       },
       {
-        label: 'Темные',
+        label: 'Dunkel',
         value: 'dark'
       }
     ]
