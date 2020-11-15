@@ -47,8 +47,6 @@ const VideoWrapper: FC<VideoWrapperProps> = ({videos, supportWebm, preparedVideo
 
       const canvas = document.createElement('canvas');
 
-      console.log('video ref', videoRef, videoRef.width, videoRef.height);
-
       canvas.width = videoRef.offsetWidth;
       canvas.height = videoRef.offsetHeight;
       const ctx = canvas.getContext('2d');
@@ -72,14 +70,10 @@ const VideoWrapper: FC<VideoWrapperProps> = ({videos, supportWebm, preparedVideo
 
   const handleReady = () => {
     if (player.current) {
-      console.log(player.current.getInternalPlayer());
       const htmlVideo = player.current.getInternalPlayer() as HTMLVideoElement;
-
-      console.log('video', htmlVideo);
 
       if (htmlVideo) {
         htmlVideo.addEventListener('loadedmetadata', () => {
-          console.log(timeRef.current);
           seekToCurrent();
         });
       }
@@ -87,12 +81,10 @@ const VideoWrapper: FC<VideoWrapperProps> = ({videos, supportWebm, preparedVideo
   };
 
   const handleSeek = () => {
-    console.log('seek');
     setPlaying(true);
   };
 
   const handlePlay = () => {
-    console.log('play');
     setScreen(null);
   };
 

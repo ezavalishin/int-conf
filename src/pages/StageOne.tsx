@@ -54,8 +54,6 @@ const StageOne: FC<StageProps> = ({videos, videoState, updateSet, goNext = null}
     //   return;
     // }
 
-    console.log(videos);
-
     const variants = videos.map((type) => {
       return type.values.map((value) => {
         return value.value;
@@ -81,15 +79,10 @@ const StageOne: FC<StageProps> = ({videos, videoState, updateSet, goNext = null}
         } as VideoParams;
       });
     } else {
-
-      console.log(variants);
-
       videoFilesMap = [
         variants[0][0],
         variants[0][1]
       ];
-
-      console.log(videoFilesMap);
 
       videoFiles = videoFilesMap.map((arr) => {
         return {
@@ -137,6 +130,7 @@ const StageOne: FC<StageProps> = ({videos, videoState, updateSet, goNext = null}
   }, []);
 
   const videoUrl = useMemo(() => {
+    console.log(videoState);
     return getVideoUrl(videoState);
   }, [videoState]);
 
@@ -171,7 +165,7 @@ const StageOne: FC<StageProps> = ({videos, videoState, updateSet, goNext = null}
 
         {goNext && (
           <Button color="primary" variant="contained" onClick={() => goNext()}>
-            Далее
+            Weiter
           </Button>
         )}
 
