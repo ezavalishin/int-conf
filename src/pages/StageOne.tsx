@@ -47,12 +47,12 @@ const StageOne: FC<StageProps> = ({videos, videoState, updateSet, goNext = null}
     // remove webm
     // sup = false;
 
-    setWebmSupported(sup);
-
-    if (!sup) {
-      setIsReady(true);
-      return;
-    }
+    // setWebmSupported(sup);
+    //
+    // if (!sup) {
+    //   setIsReady(true);
+    //   return;
+    // }
 
     console.log(videos);
 
